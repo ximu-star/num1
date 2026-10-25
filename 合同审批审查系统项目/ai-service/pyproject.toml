@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contract-review-ai-service"
+version = "1.0.0"
+description = "合同审批审查 AI 服务：Harness 三层校验 + Skill 路由 + 合同审查 Tool"
+requires-python = ">=3.12"
+dependencies = [
+  "aiosqlite>=0.20.0",
+  "fastapi>=0.116.0",
+  "httpx>=0.28.1",
+  "langchain>=1.0.0,<2.0.0",
+  "langchain-openai>=1.0.0,<2.0.0",
+  "langchain-deepseek>=1.0.0,<2.0.0",
+  "psycopg[binary]>=3.2.9",
+  "pydantic-settings>=2.10.1",
+  "pyjwt>=2.10.1",
+  "sqlalchemy>=2.0.41",
+  "uvicorn[standard]>=0.35.0",
+  "pymilvus>=2.4",
+  "sentence-transformers>=3.0",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=9.1.1"
+]
+
+[tool.setuptools.packages.find]
+include = ["contract_review*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

@@ -1,0 +1,114 @@
+[
+  {
+    "approval_code": "HT-2026-001",
+    "approval_title": "XX项目基坑支护工程合同",
+    "applicant_name": "张三",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "支护工程合同-非标.md",
+        "file_type": "md",
+        "file_path": "samples/支护工程合同-非标.md",
+        "file_token": "mock-token-001"
+      }
+    ]
+  },
+  {
+    "approval_code": "HT-2026-002",
+    "approval_title": "XX项目模架工程合同",
+    "applicant_name": "李四",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "模架工程合同-标准.md",
+        "file_type": "md",
+        "file_path": "samples/模架工程合同-标准.md",
+        "file_token": "mock-token-002"
+      }
+    ]
+  },
+  {
+    "approval_code": "HT-2026-003",
+    "approval_title": "XX项目基坑支护工程合同（扫描件）",
+    "applicant_name": "王五",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "支护工程合同-扫描件.pdf",
+        "file_type": "pdf",
+        "file_path": "samples/支护工程合同-扫描件.pdf",
+        "file_token": "mock-token-003"
+      }
+    ]
+  },
+  {
+    "approval_code": "HT-2026-004",
+    "approval_title": "XX项目基坑支护工程合同（Word）",
+    "applicant_name": "赵六",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "支护工程合同-Word.docx",
+        "file_type": "docx",
+        "file_path": "samples/支护工程合同-Word.docx",
+        "file_token": "mock-token-004"
+      }
+    ]
+  },
+  {
+    "approval_code": "HT-2026-005",
+    "approval_title": "XX项目模架工程合同（MinIO 测试）",
+    "applicant_name": "钱七",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "模架工程合同-MinIO.md",
+        "file_type": "md",
+        "file_path": "samples/模架工程合同-MinIO.md",
+        "file_token": "mock-token-005"
+      }
+    ]
+  },
+  {
+    "approval_code": "HT-2026-006",
+    "approval_title": "XX项目基坑支护工程合同（模拟版）",
+    "applicant_name": "孙八",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "模拟合同-风险审查测试.md",
+        "file_type": "md",
+        "file_path": "samples/模拟合同-风险审查测试.md",
+        "file_token": "mock-token-006-v2"
+      }
+    ]
+  },
+  {
+    "approval_code": "HT-2026-007",
+    "approval_title": "通用服务采购合同（示例）",
+    "applicant_name": "示例申请人",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "示例合同-通用服务合同-非标.md",
+        "file_type": "md",
+        "file_path": "samples/示例合同-通用服务合同-非标.md",
+        "file_token": "mock-token-007"
+      }
+    ]
+  },
+  {
+    "approval_code": "HT-2026-008",
+    "approval_title": "通用服务采购合同（标准示例）",
+    "applicant_name": "示例申请人",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "示例合同-通用服务合同-标准.md",
+        "file_type": "md",
+        "file_path": "samples/示例合同-通用服务合同-标准.md",
+        "file_token": "mock-token-008"
+      }
+    ]
+  }
+]

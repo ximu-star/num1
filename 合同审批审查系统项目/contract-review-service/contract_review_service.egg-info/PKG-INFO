@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: contract-review-service
+Version: 1.0.0
+Summary: Contract approval review service: Feishu pull, parsing, rule review, comment writeback
+Requires-Python: >=3.12
+Requires-Dist: fastapi>=0.116.0
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: minio>=7.2.0
+Requires-Dist: psycopg[binary]>=3.2.9
+Requires-Dist: pydantic-settings>=2.10.1
+Requires-Dist: pymupdf>=1.24.0
+Requires-Dist: python-docx>=1.1.0
+Requires-Dist: pywin32>=306; sys_platform == "win32"
+Requires-Dist: pyjwt>=2.10.1
+Requires-Dist: sqlalchemy>=2.0.41
+Requires-Dist: uvicorn[standard]>=0.35.0

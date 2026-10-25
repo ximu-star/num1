@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contract-review-service"
+version = "1.0.0"
+description = "Contract approval review service: Feishu pull, parsing, rule review, comment writeback"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.116.0",
+  "httpx>=0.28.1",
+  "minio>=7.2.0",
+  "psycopg[binary]>=3.2.9",
+  "pydantic-settings>=2.10.1",
+  "pymupdf>=1.24.0",
+  "huggingface-hub>=0.34,<1.0",
+  "pymilvus>=2.4",
+  "python-docx>=1.1.0",
+  "sentence-transformers>=3.0,<5",
+  "transformers>=4.41,<5",
+  "pywin32>=306; sys_platform == 'win32'",
+  "sqlalchemy>=2.0.41",
+  "uvicorn[standard]>=0.35.0",
+]
+
+[dependency-groups]
+dev = [
+  "ruff>=0.12.4",
+]
+
+[tool.setuptools.packages.find]
+include = ["contract_review_service*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

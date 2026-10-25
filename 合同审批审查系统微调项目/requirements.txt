@@ -1,0 +1,13 @@
+# 已在 transformers 5.2.0 + trl 0.24.0 + peft 0.20.0 上验证 SFT/DPO 构造。
+# TRL 0.24 会写 PreTrainedModel.warnings_issued，transformers 5.x 已移除该属性；
+# 08_train_dpo_lora.py 里有兼容补丁。不要随意升级 transformers 5.x 小版本。
+torch>=2.4
+transformers==5.2.0
+trl==0.24.0
+peft>=0.20.0
+datasets>=3.0
+accelerate>=1.4.0
+sentencepiece
+requests
+python-dotenv
+tensorboard

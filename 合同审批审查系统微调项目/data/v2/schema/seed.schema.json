@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contract_review_seed.schema.json",
+  "title": "合同审查微调种子",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "seed_id", "split", "category_id", "category", "subcategory",
+    "scenario", "user_goal", "contract_type", "is_scanned",
+    "input_snapshot", "required_facts", "expected_output_points",
+    "expected_semantic", "required_questions", "prohibited_actions",
+    "output_required", "sample_type"
+  ],
+  "properties": {
+    "seed_id": {"type": "string", "minLength": 1},
+    "split": {"enum": ["train", "validation", "final_test"]},
+    "category_id": {"type": "integer", "minimum": 1, "maximum": 8},
+    "category": {"type": "string", "minLength": 1},
+    "subcategory": {"type": "string", "minLength": 1},
+    "scenario": {"type": "string", "minLength": 1},
+    "user_goal": {"type": "string", "minLength": 1},
+    "contract_type": {"enum": ["standard", "nonstandard", "unknown"]},
+    "is_scanned": {"type": "boolean"},
+    "input_snapshot": {"type": "object"},
+    "required_facts": {"type": "array", "items": {"type": "string"}},
+    "expected_output_points": {"type": "array", "items": {"type": "string"}},
+    "expected_semantic": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rule_code", "hit", "risk_level", "reason", "evidence_position"],
+        "properties": {
+          "rule_code": {"type": "string"},
+          "hit": {"type": "boolean"},
+          "risk_level": {"enum": ["low", "medium", "high"]},
+          "reason": {"type": "string"},
+          "evidence_position": {"type": "string"},
+          "evidence_quote": {"type": "string"}
+        }
+      }
+    },
+    "required_questions": {"type": "array", "items": {"type": "string"}},
+    "prohibited_actions": {"type": "array", "items": {"type": "string"}},
+    "output_required": {"type": "boolean"},
+    "sample_type": {"enum": ["review", "semantic", "reject"]}
+  }
+}

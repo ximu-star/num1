@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>合同审批助手 - 项目架构导览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #333; display: flex; min-height: 100vh; }
+  .sidebar { width: 280px; background: #fff; border-right: 1px solid #e4e7ed; padding: 24px 0; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h2 { font-size: 18px; padding: 0 24px 16px; color: #1a1a1a; border-bottom: 1px solid #f0f0f0; margin-bottom: 12px; }
+  .sidebar a { display: block; padding: 10px 24px; color: #606266; text-decoration: none; font-size: 14px; transition: all 0.2s; }
+  .sidebar a:hover { background: #ecf5ff; color: #409eff; }
+  .sidebar a.section { font-weight: 600; color: #303133; margin-top: 12px; padding-top: 16px; border-top: 1px solid #f0f0f0; }
+  .sidebar a.sub { padding-left: 40px; font-size: 13px; color: #909399; }
+  .main { margin-left: 280px; flex: 1; padding: 32px 40px; max-width: 1100px; }
+  .main h1 { font-size: 28px; color: #1a1a1a; margin-bottom: 8px; }
+  .main .subtitle { color: #909399; font-size: 14px; margin-bottom: 32px; }
+  .card { background: #fff; border-radius: 8px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .card h3 { font-size: 18px; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0; }
+  .tag { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; margin-right: 6px; }
+  .tag-new { background: #fef0f0; color: #f56c6c; }
+  .tag-ec { background: #ecf5ff; color: #409eff; }
+  .tag-zg { background: #f0f9eb; color: #67c23a; }
+  .arch-diagram { background: #fafafa; border-radius: 6px; padding: 24px; margin: 16px 0; font-family: "Courier New", monospace; font-size: 13px; line-height: 1.8; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th { background: #f5f7fa; text-align: left; padding: 12px; font-weight: 600; color: #303133; border-bottom: 2px solid #ebeef5; }
+  td { padding: 12px; border-bottom: 1px solid #ebeef5; color: #606266; }
+  .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .flow-step { padding: 8px 16px; background: #ecf5ff; border-radius: 6px; color: #409eff; font-size: 13px; font-weight: 500; }
+  .flow-arrow { color: #c0c4cc; font-size: 18px; }
+</style>
+</head>
+<body>
+<nav class="sidebar">
+  <h2>📋 项目架构导览</h2>
+  <a href="#overview">项目概览</a>
+  <a href="#arch" class="section">整体架构</a>
+  <a href="#arch-flow">核心流程</a>
+  <a href="#services" class="section">三大服务</a>
+  <a href="#svc-review" class="sub">contract-review-service</a>
+  <a href="#svc-ai" class="sub">ai-service</a>
+  <a href="#svc-frontend" class="sub">frontend</a>
+  <a href="#harness" class="section">Harness 校验层</a>
+  <a href="#harness-fact" class="sub">事实校验</a>
+  <a href="#harness-action" class="sub">动作校验</a>
+  <a href="#harness-skill" class="sub">Skill 设计</a>
+  <a href="#datasource" class="section">数据来源</a>
+  <a href="#src-origin" class="section">代码来源标注</a>
+</nav>
+<main class="main">
+<h1>合同审批助手</h1>
+<p class="subtitle">基于电商小二 Harness 框架 + 掌柜智库 MinerU 解析能力改造而成</p>
+
+<section id="overview" class="card">
+  <h3>📌 项目概览</h3>
+  <p><strong>做什么：</strong>自动从飞书审批拉待办合同 → 解析 → 规则审查 → 风险报告回写评论区</p>
+  <p style="margin-top: 8px;"><strong>核心价值：</strong>法务不用每份合同都从头审，AI 先跑一遍规则，标出风险点</p>
+  <p style="margin-top: 8px;"><strong>技术栈：</strong>FastAPI + SQLAlchemy + PostgreSQL + Milvus + MinIO + MinerU</p>
+</section>
+
+<section id="arch" class="card">
+  <h3>🏗️ 整体架构</h3>
+  <div class="arch-diagram">
+<pre>
+┌─────────────────────────────────────────────────────────┐
+│                      飞书审批系统                        │
+│              （拉待办 + 回写评论）                        │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────┐
+│              contract-review-service (8001)             │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐    │
+│  │scheduler│→│pipeline│→│ parser  │→│ rules   │    │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘    │
+│       │            │            │            │         │
+│       ▼            ▼            ▼            ▼         │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐    │
+│  │ feishu  │  │ MinIO   │  │ MinerU  │  │   PG    │    │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘    │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────┐
+│                  ai-service (8002)                     │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │              Harness 校验层                      │    │
+│  │  事实校验 + 动作校验 + 结构校验 + 重试            │    │
+│  └─────────────────────────────────────────────────┘    │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐    │
+│  │APPROVAL │  │CONTRACT │  │ RULE    │  │ REPORT  │    │
+│  │_FETCH   │  │_PARSE   │  │_REVIEW  │  │_WRITEBACK│   │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘    │
+└─────────────────────────────────────────────────────────┘
+</pre>
+  </div>
+</section>
+
+<section id="arch-flow" class="card">
+  <h3>🔄 核心流程</h3>
+  <div class="flow">
+    <div class="flow-step">定时拉待办</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">下载附件</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">MinerU 解析</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">存解析结果</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">@触发审查</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">PG规则 + Milvus</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Harness校验</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">回写评论区</div>
+  </div>
+  <p style="margin-top: 16px; color: #909399; font-size: 13px;">
+    💡 两阶段触发：预处理自动跑，审查人工 @触发。预处理完如果之前 @过，自动跑审查。
+  </p>
+</section>
+
+<section id="services" class="card">
+  <h3>📦 三大服务</h3>
+</section>
+
+<section id="svc-review" class="card">
+  <h3>1️⃣ contract-review-service（业务服务，端口 8001）</h3>
+  <p><span class="tag tag-new">全新代码</span> 电商小二和掌柜智库都没有</p>
+  <table>
+    <tr><th>文件</th><th>功能</th><th>说明</th></tr>
+    <tr><td>services/scheduler.py</td><td>定时任务</td><td>每 60 秒拉一次飞书待办</td></tr>
+    <tr><td>services/pipeline.py</td><td>预处理流水线</td><td>拉待办→下附件→解析→存库</td></tr>
+    <tr><td>services/parser.py</td><td>合同解析</td><td>PDF 走 MinerU，Word 走 python-docx</td></tr>
+    <tr><td>services/rules.py</td><td>PG 确定性规则</td><td>正则+阈值，匹配合同风险点</td></tr>
+    <tr><td>services/review.py</td><td>审查逻辑</td><td>跑规则→生成摘要→生成评论</td></tr>
+    <tr><td>services/state_machine.py</td><td>状态机</td><td>pending/parsing/ready/reviewing/blocked/done</td></tr>
+    <tr><td>services/writeback.py</td><td>回写飞书</td><td>把审查意见写回审批评论区</td></tr>
+    <tr><td>models.py</td><td>8 张数据表</td><td>审批任务/附件/解析/规则/命中/结果/日志</td></tr>
+    <tr><td>clients/feishu.py</td><td>飞书客户端</td><td>Mock + Real 占位</td></tr>
+    <tr><td>clients/mineru.py</td><td>MinerU 解析</td><td><span class="tag tag-zg">来自掌柜智库</span></td></tr>
+    <tr><td>clients/storage.py</td><td>MinIO 存储</td><td>合同附件存 MinIO</td></tr>
+  </table>
+</section>
+
+<section id="svc-ai" class="card">
+  <h3>2️⃣ ai-service（AI 服务，端口 8002）</h3>
+  <p><span class="tag tag-ec">来自电商小二</span> 改了业务逻辑</p>
+  <table>
+    <tr><th>文件</th><th>功能</th><th>说明</th></tr>
+    <tr><td>harness/rules/fact.py</td><td>事实校验</td><td>提取合同金额/比例/天数，对比工具结果</td></tr>
+    <tr><td>harness/rules/action.py</td><td>动作校验</td><td>只允许 WRITE_COMMENT</td></tr>
+    <tr><td>harness/rules/correction.py</td><td>重试机制</td><td>校验失败自动重试 1 次</td></tr>
+    <tr><td>harness/skills/catalog.py</td><td>4 个 Skill</td><td>拉待办/解析/规则审查/报告回写</td></tr>
+    <tr><td>harness/tools/contract.py</td><td>合同 Tool</td><td>调业务服务的接口</td></tr>
+    <tr><td>harness/validator/answer.py</td><td>结构校验</td><td>输出格式必须符合五段式</td></tr>
+  </table>
+</section>
+
+<section id="svc-frontend" class="card">
+  <h3>3️⃣ frontend（管理后台前端）</h3>
+  <p><span class="tag tag-ec">来自电商小二</span> 改了页面内容</p>
+  <p style="color: #909399; font-size: 14px;">
+    定位：普通法务在飞书看评论，不登录这个系统。这个前端只是管理员看任务状态、重试 blocked 任务、维护规则用的。
+  </p>
+</section>
+
+<section id="harness" class="card">
+  <h3>🛡️ Harness 校验层（来自电商小二）</h3>
+  <p style="margin-bottom: 16px;">Harness 的作用：不是帮 AI 选 Tool，而是校验 AI 的输出不能胡说、不能乱操作。</p>
+
+  <div id="harness-fact" class="card" style="margin: 0 0 16px 0; box-shadow: none; border: 1px solid #f0f0f0;">
+    <h3 style="border: none; padding: 0 0 8px 0;">1️⃣ 事实校验（fact.py）</h3>
+    <p><strong>原理：</strong>从 AI 回复里用正则提取事实 → 和工具返回的结果对比</p>
+    <p style="margin-top: 8px;"><strong>提取的事实：</strong></p>
+    <ul style="margin-left: 20px; margin-top: 8px; color: #606266;">
+      <li>金额（合同金额/总价）</li>
+      <li>比例（预付款/付款比例/质保金）</li>
+      <li>天数（账期/工期）</li>
+      <li>条款号（第X条）</li>
+      <li>规则编码（R-BUSINESS-001）</li>
+    </ul>
+    <p style="margin-top: 8px; color: #f56c6c;">如果 AI 说的数字在工具结果里找不到 → 判定为编造 → 重试</p>
+  </div>
+
+  <div id="harness-action" class="card" style="margin: 0 0 16px 0; box-shadow: none; border: 1px solid #f0f0f0;">
+    <h3 style="border: none; padding: 0 0 8px 0;">2️⃣ 动作校验（action.py）</h3>
+    <p><strong>原理：</strong>只允许写回评论，不允许其他写操作</p>
+    <p style="margin-top: 8px;"><strong>4 条规则：</strong></p>
+    <ul style="margin-left: 20px; margin-top: 8px; color: #606266;">
+      <li>回写前必须确认任务状态是 reviewing</li>
+      <li>同一 task + version 不能重复回写</li>
+      <li>回写内容必须非空，不超过 3000 字</li>
+      <li>回写失败进 blocked，不能谎称成功</li>
+    </ul>
+  </div>
+
+  <div id="harness-skill" class="card" style="margin: 0; box-shadow: none; border: 1px solid #f0f0f0;">
+    <h3 style="border: none; padding: 0 0 8px 0;">3️⃣ Skill 设计（skills/catalog.py）</h3>
+    <p><strong>4 个 Skill：</strong></p>
+    <table style="margin-top: 8px;">
+      <tr><th>Skill</th><th>包含的 Tool</th></tr>
+      <tr><td>APPROVAL_FETCH</td><td>list_pending_approvals / get_approval_detail / download_attachment</td></tr>
+      <tr><td>CONTRACT_PARSE</td><td>parse_contract / get_approval_detail</td></tr>
+      <tr><td>RULE_REVIEW</td><td>run_pg_rules / search_manual_semantic / get_approval_detail</td></tr>
+      <tr><td>REPORT_WRITEBACK</td><td>save_result / write_comment / get_approval_detail</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="datasource" class="card">
+  <h3>🗄️ 数据来源（两路规则匹配）</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+    <div style="background: #f5f7fa; padding: 16px; border-radius: 6px;">
+      <h4 style="color: #409eff; margin-bottom: 8px;">PG 确定性规则</h4>
+      <p style="font-size: 13px; color: #606266;">
+        存在 PostgreSQL 的 review_rules 表<br>
+        关键词匹配 + 阈值比较<br>
+        例：付款天数 > 30 天、预付款 > 30%<br>
+        <strong>优点：</strong>准确、可控<br>
+        <strong>缺点：</strong>死板、只能匹配预设规则
+      </p>
+    </div>
+    <div style="background: #f5f7fa; padding: 16px; border-radius: 6px;">
+      <h4 style="color: #67c23a; margin-bottom: 8px;">Milvus 语义检索</h4>
+      <p style="font-size: 13px; color: #606266;">
+        造价规范手册切片存 Milvus<br>
+        语义相似度匹配<br>
+        例：合同里有"争议解决"→ 找手册里的争议解决条款<br>
+        <strong>优点：</strong>灵活、能匹配没预设的规则<br>
+        <strong>缺点：</strong>可能不准、需要人工复核
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="src-origin" class="card">
+  <h3>📌 代码来源标注</h3>
+  <table>
+    <tr><th>标签</th><th>含义</th></tr>
+    <tr><td><span class="tag tag-new">全新代码</span></td><td>电商小二和掌柜智库都没有，本项目新写的</td></tr>
+    <tr><td><span class="tag tag-ec">来自电商小二</span></td><td>照搬电商小二框架，改了业务逻辑</td></tr>
+    <tr><td><span class="tag tag-zg">来自掌柜智库</span></td><td>照搬掌柜智库，加了封装</td></tr>
+  </table>
+</section>
+
+</main>
+</body>
+</html>

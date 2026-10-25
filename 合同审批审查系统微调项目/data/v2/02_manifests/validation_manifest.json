@@ -1,0 +1,31 @@
+{
+  "split": "validation",
+  "seed_ids": [
+    "cat4_review_47b3b9e8_001",
+    "cat5_review_47b3b9e8_001",
+    "cat5_full_review_47b3b9e8_001",
+    "cat5_semantic_rsem03_47b3b9e8_001",
+    "cat1_review_99756326_001",
+    "cat4_review_99756326_001",
+    "cat5_review_99756326_001",
+    "cat5_full_review_99756326_001",
+    "cat3_semantic_rsem02_99756326_001",
+    "cat6_semantic_rsem05_99756326_001",
+    "reject_parse_failed_validation_24352046_001",
+    "reject_parse_failed_validation_06b3c2a8_002",
+    "reject_insufficient_validation_24352046_001",
+    "reject_insufficient_validation_06b3c2a8_002",
+    "reject_out_of_scope_validation_6403c1e5_001",
+    "reject_out_of_scope_validation_b9ef9b88_002",
+    "reject_semantic_unknown_validation_24352046_001",
+    "reject_semantic_unknown_validation_06b3c2a8_002"
+  ],
+  "target_seed_count": 18,
+  "contracts": [
+    "真实合同1.md",
+    "真实合同2.md"
+  ],
+  "variant_contracts": [],
+  "fingerprint": "2a2988e83e7fb841f645a30544878e5f6821a704",
+  "status": "auto_generated"
+}

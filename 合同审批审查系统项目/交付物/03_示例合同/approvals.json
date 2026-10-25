@@ -1,0 +1,30 @@
+[
+  {
+    "approval_code": "HT-2026-007",
+    "approval_title": "通用服务采购合同（示例）",
+    "applicant_name": "示例申请人",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "示例合同-通用服务合同-非标.md",
+        "file_type": "md",
+        "file_path": "samples/示例合同-通用服务合同-非标.md",
+        "file_token": "mock-token-007"
+      }
+    ]
+  },
+  {
+    "approval_code": "HT-2026-008",
+    "approval_title": "通用服务采购合同（标准示例）",
+    "applicant_name": "示例申请人",
+    "approval_status": "pending",
+    "attachments": [
+      {
+        "file_name": "示例合同-通用服务合同-标准.md",
+        "file_type": "md",
+        "file_path": "samples/示例合同-通用服务合同-标准.md",
+        "file_token": "mock-token-008"
+      }
+    ]
+  }
+]

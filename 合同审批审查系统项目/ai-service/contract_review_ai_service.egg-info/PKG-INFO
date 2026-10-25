@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: contract-review-ai-service
+Version: 1.0.0
+Summary: 合同审批审查 AI 服务：Harness 三层校验 + Skill 路由 + 合同审查 Tool
+Requires-Python: >=3.12
+Requires-Dist: aiosqlite>=0.20.0
+Requires-Dist: fastapi>=0.116.0
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: langchain<2.0.0,>=1.0.0
+Requires-Dist: langchain-openai<2.0.0,>=1.0.0
+Requires-Dist: langchain-deepseek<2.0.0,>=1.0.0
+Requires-Dist: psycopg[binary]>=3.2.9
+Requires-Dist: pydantic-settings>=2.10.1
+Requires-Dist: pyjwt>=2.10.1
+Requires-Dist: sqlalchemy>=2.0.41
+Requires-Dist: uvicorn[standard]>=0.35.0
+Requires-Dist: pymilvus>=2.4
+Requires-Dist: sentence-transformers>=3.0
+Provides-Extra: test
+Requires-Dist: pytest>=9.1.1; extra == "test"

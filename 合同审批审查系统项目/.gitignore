@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.db
+.env
+.env.bak
+config.env
+storage/
+node_modules/
+dist/
+.venv/
+.runtime/
+logs/
+_smoke.json
